@@ -1,0 +1,60 @@
+﻿@model HomeViewModel;
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    
+    @if(!string.IsNullOrEmpty(ViewBag.ErrorMessage)) {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+    
+    <table class="table">
+        <thead>
+            <tr> <th>Id</th>
+                <th>Tipo</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Color</th>
+                <th>Year</th> <th>Gallons</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var vehicle in Model.Vehicles)
+            {
+                <tr>
+                    <td>@vehicle.ID</td>
+                    <td>@(vehicle.GetType().Name)</td>
+                    <td>@vehicle.Brand</td>
+                    <td>@vehicle.Model</td>
+                    <td>@vehicle.Color</td>
+                    <td>@vehicle.Year</td> <td>@vehicle.Gas.ToString("N1")</td>
+                    <td>@(vehicle.IsEngineOn() ? "Encendido": "Apagado")</td>
+                    <td>
+                        @if (vehicle.IsEngineOn())
+                        {
+                            <a href="/Home/StopEngine?id=@vehicle.ID">Stop Engine</a> 
+                        }
+                        else
+                        {
+                            <a href="/Home/StartEngine?id=@vehicle.ID">Start Engine</a>
+                        }
+                        | <a href="/Home/AddGas?id=@vehicle.ID">Llenar tanque</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div style="margin-top: 20px;">
+        <a href="/Home/AddMustang" style="margin-right: 15px;">Add Mustang</a>
+        <a href="/Home/AddExplorer" style="margin-right: 15px;">Add Explorer</a>
+        <a href="/Home/AddEscape">Add Escape</a> </div>
+</div>
